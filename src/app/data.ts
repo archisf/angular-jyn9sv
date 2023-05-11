@@ -1,8 +1,29 @@
+interface Item {
+  id: number;
+  cel0: string;
+  key?: string;
+  date1?: any;
+  date2?: any;
+  date3: any;
+  date4: any;
+  date5: any;
+  date6: any;
+  date7: any;
+  x1?: any;
+  x2?: any;
+  x3?: any;
+  x4?: any;
+  x5?: any;
+  x6?: any;
+  x7?: any;
+  contents?: Item[];
+}
+
 const data = [
   {
     id: 1,
     key: null,
-    cel0: null,
+    cel0: 'משמרת_1',
     x1: { name: 'DKK1_', icon: 'icon1' },
     x2: { name: 'DKK2_', icon: 'icon1' },
     x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -18,11 +39,11 @@ const data = [
     date6: null,
     date7: null,
     level: 0,
-    Contents: [
+    contents: [
       {
         id: 2,
         key: null,
-        cel0: null,
+        cel0: 'Task_1',
         x1: { name: 'SSO1-01,2', icon: 'icon1' },
         x2: { name: 'עובד~0,2', icon: 'icon1' },
         x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -38,11 +59,11 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 3,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_1',
             x1: { name: 'SSO1-01,2', icon: 'icon1' },
             x2: { name: 'עובד~0,2', icon: 'icon1' },
             x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -58,12 +79,12 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 4,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_2',
             x1: { name: 'SSO1-02,2', icon: 'icon1' },
             x2: { name: 'עובד~1,2', icon: 'icon1' },
             x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -79,14 +100,14 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
       {
         id: 5,
         key: null,
-        cel0: null,
+        cel0: 'Task_2',
         x1: { name: 'SSO1-02,2', icon: 'icon1' },
         x2: { name: 'עובד~1,2', icon: 'icon1' },
         x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -102,11 +123,11 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 6,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_1',
             x1: { name: 'SSO1-01,2', icon: 'icon1' },
             x2: { name: 'עובד~0,2', icon: 'icon1' },
             x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -122,12 +143,12 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 7,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_3',
             x1: { name: 'SSO1-02,2', icon: 'icon1' },
             x2: { name: 'עובד~1,2', icon: 'icon1' },
             x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -143,7 +164,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
@@ -152,7 +173,7 @@ const data = [
   {
     id: 8,
     key: null,
-    cel0: null,
+    cel0: 'משמרת_2',
     x1: { name: 'DKK1_', icon: 'icon1' },
     x2: { name: 'DKK2_', icon: 'icon1' },
     x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -168,11 +189,11 @@ const data = [
     date6: null,
     date7: null,
     level: 0,
-    Contents: [
+    contents: [
       {
         id: 9,
         key: null,
-        cel0: null,
+        cel0: 'Task_1',
         x1: { name: 'SSO1-01,2', icon: 'icon1' },
         x2: { name: 'עובד~0,2', icon: 'icon1' },
         x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -188,11 +209,11 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 10,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_1',
             x1: { name: 'SSO1-01,2', icon: 'icon1' },
             x2: { name: 'עובד~0,2', icon: 'icon1' },
             x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -208,12 +229,12 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 11,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_2',
             x1: { name: 'SSO1-02,2', icon: 'icon1' },
             x2: { name: 'עובד~1,2', icon: 'icon1' },
             x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -229,14 +250,14 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
       {
         id: 12,
         key: null,
-        cel0: null,
+        cel0: 'Task_2',
         x1: { name: 'SSO1-02,2', icon: 'icon1' },
         x2: { name: 'עובד~1,2', icon: 'icon1' },
         x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -252,11 +273,11 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 13,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_1',
             x1: { name: 'SSO1-01,2', icon: 'icon1' },
             x2: { name: 'עובד~0,2', icon: 'icon1' },
             x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -272,12 +293,12 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 14,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_2',
             x1: { name: 'SSO1-02,2', icon: 'icon1' },
             x2: { name: 'עובד~1,2', icon: 'icon1' },
             x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -293,7 +314,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
@@ -302,7 +323,7 @@ const data = [
   {
     id: 15,
     key: null,
-    cel0: null,
+    cel0: 'משמרת_3',
     x1: { name: 'DKK1_', icon: 'icon1' },
     x2: { name: 'DKK2_', icon: 'icon1' },
     x3: { name: 'DKK32,2', icon: 'icon1' },
@@ -318,11 +339,11 @@ const data = [
     date6: null,
     date7: null,
     level: 0,
-    Contents: [
+    contents: [
       {
         id: 16,
         key: null,
-        cel0: null,
+        cel0: 'Task_1',
         x1: { name: 'SSO1-01,2', icon: 'icon1' },
         x2: { name: 'עובד~0,2', icon: 'icon1' },
         x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -338,7 +359,7 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 17,
             key: null,
@@ -358,7 +379,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 18,
@@ -379,14 +400,14 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
       {
         id: 19,
         key: null,
-        cel0: null,
+        cel0: 'Task_2',
         x1: { name: 'SSO1-02,2', icon: 'icon1' },
         x2: { name: 'עובד~1,2', icon: 'icon1' },
         x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -402,11 +423,11 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 20,
             key: null,
-            cel0: null,
+            cel0: 'תפקיד_1',
             x1: { name: 'SSO1-01,2', icon: 'icon1' },
             x2: { name: 'עובד~0,2', icon: 'icon1' },
             x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -422,12 +443,12 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 21,
             key: null,
-            cel0: null,
+            cel0: "תפקיד_2",
             x1: { name: 'SSO1-02,2', icon: 'icon1' },
             x2: { name: 'עובד~1,2', icon: 'icon1' },
             x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -443,7 +464,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
@@ -452,7 +473,7 @@ const data = [
   {
     id: 22,
     key: null,
-    cel0: null,
+    cel0: 'משמרת_4',
     x1: { name: 'DKK1_', icon: 'icon1' },
     x2: { name: 'DKK2_', icon: 'icon1' },
     x3: { name: 'DKK33,2', icon: 'icon1' },
@@ -468,11 +489,11 @@ const data = [
     date6: null,
     date7: null,
     level: 0,
-    Contents: [
+    contents: [
       {
         id: 23,
         key: null,
-        cel0: null,
+        cel0: 'Task_1',
         x1: { name: 'SSO1-01,2', icon: 'icon1' },
         x2: { name: 'עובד~0,2', icon: 'icon1' },
         x3: { name: 'DKK30,2', icon: 'icon1' },
@@ -488,7 +509,7 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 24,
             key: null,
@@ -508,7 +529,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 25,
@@ -529,14 +550,14 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
       {
         id: 26,
         key: null,
-        cel0: null,
+        cel0: 'Task_2',
         x1: { name: 'SSO1-02,2', icon: 'icon1' },
         x2: { name: 'עובד~1,2', icon: 'icon1' },
         x3: { name: 'DKK31,2', icon: 'icon1' },
@@ -552,7 +573,7 @@ const data = [
         date6: null,
         date7: null,
         level: 1,
-        Contents: [
+        contents: [
           {
             id: 27,
             key: null,
@@ -572,7 +593,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
           {
             id: 28,
@@ -593,7 +614,7 @@ const data = [
             date6: null,
             date7: null,
             level: 2,
-            Contents: null,
+            contents: null,
           },
         ],
       },
@@ -601,4 +622,4 @@ const data = [
   },
 ];
 
-export { data };
+export { data, Item };

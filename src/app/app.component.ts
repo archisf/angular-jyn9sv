@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SortDescriptor } from '@progress/kendo-data-query';
-import { filesystem, Entry, columns } from './filesystem';
+import { Entry, columns } from './filesystem';
+import { data, Item } from './data';
 
 @Component({
   selector: 'my-app',
@@ -17,8 +18,8 @@ import { filesystem, Entry, columns } from './filesystem';
         >
         <kendo-treelist-column [expandable]="true" field="name" title="Name" [width]="150">
             <ng-template kendoTreeListCellTemplate let-dataItem>
-                <span class="k-icon k-i-{{ dataItem.type === 'directory' ? 'tell-a-friend' : 'user' }}"></span>
-                {{ dataItem.name }}
+                <span class="k-icon k-i-{{ dataItem.contents !== null ? 'tell-a-friend' : 'user' }}"></span>
+                {{ dataItem.cel0 }}
             </ng-template>
         </kendo-treelist-column>
         <kendo-treelist-column *ngFor="let col of columns" [field]="col.field" [title]="col.title" [width]="width" >
@@ -49,7 +50,7 @@ import { filesystem, Entry, columns } from './filesystem';
   `,
 })
 export class AppComponent {
-  public data: Entry[] = filesystem;
+  public data: Item[] = data;
   width = 120;
   columns = columns;
 
