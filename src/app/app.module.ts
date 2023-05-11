@@ -6,21 +6,17 @@ import { TreeListModule } from '@progress/kendo-angular-treelist';
 import { IntlModule } from '@progress/kendo-angular-intl';
 
 import { AppComponent } from './app.component';
+import { CellDirective } from './cell.directive';
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        TreeListModule,
-        IntlModule
-    ],
-    declarations: [
-        AppComponent
-    ],
-    bootstrap: [
-        AppComponent
-    ]
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    TreeListModule,
+    IntlModule,
+  ],
+  declarations: [AppComponent, CellDirective],
+  bootstrap: [AppComponent],
 })
-
-export class AppModule { }
+export class AppModule {}

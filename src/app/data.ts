@@ -170,7 +170,7 @@ const data = [
       },
     ],
   },
-  
+
   {
     id: 8,
     key: null,
@@ -259,9 +259,9 @@ const data = [
         id: 12,
         key: null,
         cel0: 'Task_2',
-        x1: { name: 'SSO1-02,2', icon: 'icon1' },
-        x2: { name: 'עובד~1,2', icon: 'icon1' },
-        x3: { name: 'DKK31,2', icon: 'icon1' },
+        x1: { name: 'SSO1-02,2', icon: 'icon1', color: '#E68000' },
+        x2: { name: 'עובד~1,2', icon: 'icon1', color: '#E68000' },
+        x3: { name: 'DKK31,2', icon: 'icon1', color: '#E68000' },
         x4: null,
         x5: null,
         x6: null,
@@ -449,7 +449,7 @@ const data = [
           {
             id: 21,
             key: null,
-            cel0: "תפקיד_2",
+            cel0: 'תפקיד_2',
             x1: { name: 'SSO1-02,2', icon: 'icon1' },
             x2: { name: 'עובד~1,2', icon: 'icon1' },
             x3: { name: 'DKK31,2', icon: 'icon1' },

@@ -1,4 +1,3 @@
-
 /* Add application styles & imports to this file! */
 
 body {
@@ -13,7 +12,31 @@ my-app {
   padding: 30px;
 }
 
-my-app > .k-icon.k-i-loading {
+my-app td {
+  position: relative;
+  z-index: 0;
+  text-align: center;
+}
+
+my-app td span.selected {
+  user-select: none;
+  background-color: #63ceff;
+}
+
+my-app td span.selected::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  border-width: 1px 1px 0 0;
+  border-style: groove;
+}
+
+my-app my-app > .k-icon.k-i-loading {
   font-size: 64px;
   position: absolute;
   top: 50%;
