@@ -17,14 +17,17 @@ import { data, Item } from './data';
           [height]="800"
         >
         <kendo-treelist-column [expandable]="true" field="name" title="Name" [width]="150">
-            <ng-template kendoTreeListCellTemplate let-dataItem>
+            <ng-template class="temp" kendoTreeListCellTemplate let-dataItem>
                 <span [ngClass]="{selected: true }" class="k-icon k-i-{{ dataItem.contents !== null ? 'tell-a-friend' : 'user' }}"></span>
                 {{ dataItem.cel0 }}
             </ng-template>
         </kendo-treelist-column>
         <kendo-treelist-column *ngFor="let col of columns"  [field]="col.field" [title]="col.title" [width]="width">
-          <ng-template let-dataItem="dataItem" let-columnIndex="columnIndex" cellDirective >
-          {{coloumnIndex === 0 ? dataItem.cel0 : dataItem[fields[columnIndex]]  }}
+          <ng-template kendoTreeListCellTemplate let-dataItem="dataItem" let-columnIndex="columnIndex">
+          <span cellDirective [dataItem]="dataItem" [columnIndex]="columnIndex">
+            {{columnIndex === 0 ? dataItem.cel0 : dataItem[fields[columnIndex]]?.name }}
+          </span>
+            
           
           </ng-template>
         </kendo-treelist-column>
