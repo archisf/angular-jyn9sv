@@ -13,13 +13,13 @@
     "@angular/animations": "^16.0.0",
     "@angular/common": "^16.0.0",
     "@angular/compiler": "^16.0.0",
-    "@angular/compiler-cli": "^16.0.0",
+    "@angular/compiler-cli": "^16.0.1",
     "@angular/core": "^16.0.0",
     "@angular/forms": "^16.0.0",
-    "@angular/localize": "^16.0.0",
+    "@angular/localize": "^16.0.1",
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
-    "@angular/router": "^16.0.0",
+    "@angular/router": "^16.0.1",
     "@progress/kendo-angular-buttons": "^12.0.1",
     "@progress/kendo-angular-common": "^12.0.1",
     "@progress/kendo-angular-dateinputs": "^12.0.1",
@@ -47,17 +47,13 @@
     "core-js": "^3.30.2",
     "rxjs": "^7.8.1",
     "tslib": "^2.5.0",
-    "typescript": "^5.0.4",
     "web-animations-js": "^2.3.2",
     "zone.js": "^0.13.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.3.0",
-    "@angular/cli": "~13.3.0",
-    "@angular/compiler-cli": "~13.3.0",
-    "@angular/router": "~13.3.0",
-    "@angular/localize": "~13.3.0",
+    "@angular-devkit/build-angular": "~16.0.1",
+    "@angular/cli": "~16.0.1",
     "@types/node": "12.11.1",
-    "typescript": "~4.6.2"
+    "typescript": "^5.0.4"
   }
 }
