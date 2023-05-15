@@ -12,18 +12,28 @@ my-app {
   padding: 30px;
 }
 
-my-app td {
-  position: relative;
+.available {
+  position: relative !important;
   z-index: 0;
   text-align: center;
 }
 
-my-app td span.selected {
+td span.level1 {
   user-select: none;
-  background-color: #63ceff;
+  background-color: #73AA67;
 }
 
-my-app td span.selected::before {
+td span.level2 {
+  user-select: none;
+  background-color: #A7E39D;
+}
+
+td span.special {
+  user-select: none;
+  background-color: #E68000;
+}
+
+td span.level1::before, td span.level2::before , td span.special::before {
   content: '';
   position: absolute;
   z-index: -1;

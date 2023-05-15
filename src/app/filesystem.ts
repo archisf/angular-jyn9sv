@@ -7605,31 +7605,31 @@ const filesystem: Entry[] = [
 
 const columns = [
   {
-    title: 'א',
+    title: '7.05 א',
     field: 'x1.name',
   },
   {
-    title: 'ב',
+    title: '8.05 ב',
     field: 'x2.name',
   },
   {
-    title: 'ג',
+    title: '9.05 ג',
     field: 'x3.name',
   },
   {
-    title: 'ד',
+    title: '10.05 ד',
     field: 'x4.name',
   },
   {
-    title: 'י',
+    title: '11.05 ה',
     field: 'x5.name',
   },
   {
-    title: 'ו',
+    title: '12.05 ו',
     field: 'x6.name',
   },
   {
-    title: 'ש',
+    title: '13.05 ש',
     field: 'x7.name',
   },
 ];

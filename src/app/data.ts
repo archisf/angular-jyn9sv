@@ -4,11 +4,12 @@ interface Item {
   key?: string;
   date1?: any;
   date2?: any;
-  date3: any;
-  date4: any;
-  date5: any;
-  date6: any;
-  date7: any;
+  date3?: any;
+  date4?: any;
+  date5?: any;
+  date6?: any;
+  date7?: any;
+  level: number;
   x1?: any;
   x2?: any;
   x3?: any;
@@ -19,14 +20,14 @@ interface Item {
   contents?: Item[];
 }
 
-const data = [
+const data: Item[] = [
   {
     id: 1,
     key: null,
     cel0: 'משמרת_1',
-    x1: { name: 'DKK1_', icon: 'icon1' },
-    x2: { name: 'DKK2_', icon: 'icon1' },
-    x3: { name: 'DKK30,2', icon: 'icon1' },
+    x1: { name: 'DKK0_1', icon: 'icon1' },
+    x2: { name: 'DKK0_2', icon: 'icon1' },
+    x3: { name: 'DKK0_3', icon: 'icon1' },
     x4: null,
     x5: null,
     x6: null,
@@ -44,9 +45,9 @@ const data = [
         id: 2,
         key: null,
         cel0: 'Task_1',
-        x1: { name: 'SSO1-01,2', icon: 'icon1' },
-        x2: { name: 'עובד~0,2', icon: 'icon1' },
-        x3: { name: 'DKK30,2', icon: 'icon1' },
+        x1: { name: 'SS11-11,1', icon: 'icon1' },
+        x2: { name: 'עובד~1,1', icon: 'icon1' },
+        x3: { name: 'DKK11,1', icon: 'icon1' },
         x4: null,
         x5: null,
         x6: null,
@@ -64,7 +65,7 @@ const data = [
             id: 3,
             key: null,
             cel0: 'תפקיד_1',
-            x1: { name: 'SSO1-22,2', icon: 'icon1' },
+            x1: { name: 'SS22-22,2', icon: 'icon1' },
             x2: { name: 'עובד~2,2', icon: 'icon1' },
             x3: { name: 'DKK22,2', icon: 'icon1' },
             x4: null,
@@ -85,9 +86,9 @@ const data = [
             id: 4,
             key: null,
             cel0: 'תפקיד_2',
-            x1: { name: 'SSO1-02,2', icon: 'icon1' },
-            x2: { name: 'עובד~1,2', icon: 'icon1' },
-            x3: { name: 'DKK31,2', icon: 'icon1' },
+            x1: { name: 'SS22-2,22222', icon: 'icon1' },
+            x2: { name: 'עובד~2,2', icon: 'icon1' },
+            x3: { name: 'DKK22,2', icon: 'icon1' },
             x4: null,
             x5: null,
             x6: null,
@@ -108,9 +109,9 @@ const data = [
         id: 5,
         key: null,
         cel0: 'Task_2',
-        x1: { name: 'SSO1-02,2', icon: 'icon1' },
-        x2: { name: 'עובד~1,2', icon: 'icon1' },
-        x3: { name: 'DKK31,2', icon: 'icon1' },
+        x1: { name: 'SS21-22,2', icon: 'icon1' },
+        x2: { name: 'עובד~2,2', icon: 'icon1' },
+        x3: { name: 'DKK22,2', icon: 'icon1' },
         x4: null,
         x5: null,
         x6: null,

@@ -7,6 +7,11 @@ import { IntlModule } from '@progress/kendo-angular-intl';
 
 import { AppComponent } from './app.component';
 import { CellDirective } from './cell.directive';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { GridContextMenuComponent } from './grid-context-menu.component';
+
+
 
 @NgModule({
   imports: [
@@ -15,8 +20,10 @@ import { CellDirective } from './cell.directive';
     FormsModule,
     TreeListModule,
     IntlModule,
+    GridModule,
+    PopupModule,
   ],
-  declarations: [AppComponent, CellDirective],
+  declarations: [AppComponent, CellDirective, GridContextMenuComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
