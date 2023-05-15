@@ -1,9 +1,4 @@
 node_modules/
 
 .angular/
-.idea/.gitignore
-.idea/angular-jyn9sv.iml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/codeStyles/codeStyleConfig.xml
-.idea/codeStyles/Project.xml
+.idea/
