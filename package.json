@@ -38,7 +38,7 @@
     "@progress/kendo-angular-pdf-export": "^12.0.1",
     "@progress/kendo-angular-popup": "^12.0.1",
     "@progress/kendo-angular-progressbar": "^12.0.1",
-    "@progress/kendo-angular-treelist": "^12.0.1",
+    "@progress/kendo-angular-treelist": "^12.1.0",
     "@progress/kendo-angular-treeview": "^12.0.1",
     "@progress/kendo-angular-upload": "^12.0.1",
     "@progress/kendo-angular-utils": "12.0.1",
