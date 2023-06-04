@@ -9,16 +9,7 @@ function dateRange(startDate, endDate, steps = 1): Date[] {
   return dateArray;
 }
 
-const fieldNames = [
-  'workerName',
-  'zero',
-  'first',
-  'second',
-  'third',
-  'fourth',
-  'fifth',
-  'sixth',
-];
+const fieldNames = ['workerName', 'zero', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
 
 const subFieldNames = {
   0: 'zero.ShiftName',
@@ -31,3 +22,4 @@ const subFieldNames = {
 };
 
 export { dateRange, fieldNames, subFieldNames };
+

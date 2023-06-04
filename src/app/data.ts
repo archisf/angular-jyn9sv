@@ -20,6 +20,59 @@ interface Item {
   contents?: Item[];
 }
 
+
+interface GanttEntry {
+    date1: string;
+    date2: string;
+    date3: string;
+    date4: string;
+    date5: string;
+    date6: string;
+    date7: string;
+    datename1: string;
+    datename2: string;
+    datename3: string;
+    datename4: string;
+    datename5: string;
+    datename6: string;
+    datename7: string;
+    Contents: Content[];
+}
+
+interface Content {
+    id: number;
+    key: string;    
+    cel0: ElementCell;
+    x1: ElementCell;
+    x2: ElementCell;
+    x3: ElementCell;
+    x4: ElementCell;
+    x5: ElementCell;
+    x6: ElementCell;
+    x7: ElementCell;
+    level: number;
+    ElementData: ElementData;
+    keydata: string;
+    Contents: Content[];
+}
+
+interface ElementCell {
+  name: string;
+  icon: string; 
+}
+
+interface ElementData {
+        DepartmentId: number;
+        TaskDate: string;
+        TaskId: number;
+        JobId: number;
+        JobOrder: number;
+        WorkerID: number;
+ 
+    }
+
+
+
 const data: Item[] = [
   {
     id: 1,
@@ -171,7 +224,6 @@ const data: Item[] = [
       },
     ],
   },
-
   {
     id: 8,
     key: null,
@@ -624,4 +676,6 @@ const data: Item[] = [
   },
 ];
 
-export { data, Item };
+
+
+export { data, Item, GanttEntry };

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { columns, fields } from './filesystem';
+import { fields } from './filesystem';
 
 @Directive({
   selector: '[cellDirective]',
@@ -18,13 +18,10 @@ export class CellDirective implements OnInit {
 
   ngOnInit(): void {
     if (+this.columnIndex !== 0) {
-      this.renderer.addClass(this.elRef.nativeElement.parentElement, 'available')
+      this.renderer.addClass(this.elRef.nativeElement.parentElement, 'available');
     }
 
-    if (
-      +this.columnIndex !== 0 &&
-      this.dataItem[fields[this.columnIndex]]?.name
-    ) {
+    if (+this.columnIndex !== 0 && this.dataItem[fields[this.columnIndex]]?.name) {
       console.log(this.dataItem, this.columnIndex, this.column, this.rowIndex, this.level);
       // if (this.level === 1) {
       //   console.log('back');
