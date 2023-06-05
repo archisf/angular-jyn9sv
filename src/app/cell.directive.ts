@@ -22,7 +22,7 @@ export class CellDirective implements OnInit {
     }
 
     if (+this.columnIndex !== 0 && this.dataItem[fields[this.columnIndex]]?.name) {
-      console.log(this.dataItem, this.columnIndex, this.column, this.rowIndex, this.level);
+      // console.log(this.dataItem, this.columnIndex, this.column, this.rowIndex, this.level);
       // if (this.level === 1) {
       //   console.log('back');
       //   this.renderer.setStyle(

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SortDescriptor } from '@progress/kendo-data-query';
 import { GanttEntry, Item, data } from './data';
 import { fields } from './filesystem';
 
@@ -12,8 +11,9 @@ import { fields } from './filesystem';
       kendoTreeListExpandable
       [kendoTreeListHierarchyBinding]="newData?.Contents"
       childrenField="Contents"
-      [expandBy]="'name'"
-      [(expandedKeys)]="expandedKeys"
+      [expandBy]="'id'"
+      [expandedKeys]="expandedKeys"
+      (expandedKeysChange)="onKeysChanged($event)"
       [pageable]="true"
       [pageSize]="30"
       [height]="900"
@@ -94,28 +94,19 @@ export class AppComponent implements OnInit {
   }
 
   public expandNodes() {
+    console.log('expandNodes');
     this.expandedKeys = this.allParentNodes.slice();
   }
 
   public collapseNodes() {
+    console.log('collapseNodes');
     this.expandedKeys = [];
   }
-
-  public sort: SortDescriptor[] = [
-    {
-      field: 'type',
-      dir: 'asc',
-    },
-    {
-      field: 'name',
-      dir: 'asc',
-    },
-  ];
 
   public getAllParentTextProperties(items: Array<any>) {
     items.forEach((i) => {
       if (i.Contents) {
-        this.allParentNodes.push(i.name);
+        this.allParentNodes.push(i.id);
         this.getAllParentTextProperties(i.Contents);
       }
     });
@@ -128,5 +119,9 @@ export class AppComponent implements OnInit {
     } else if (e.item === 'צמצם') {
       this.collapseNodes();
     }
+  }
+
+  onKeysChanged(e) {
+    this.expandedKeys = e;
   }
 }
