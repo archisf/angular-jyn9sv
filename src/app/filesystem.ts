@@ -7634,6 +7634,6 @@ const columns = [
   },
 ];
 
-const fields = [null];
+const fields = ['cel0'];
 
 export { filesystem, columns, fields };
