@@ -1,11 +1,12 @@
 import { State, process } from '@progress/kendo-data-query';
-import { Component, NgZone, OnInit, Renderer2, AfterViewInit, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { GanttEntry, Item, data } from './data';
+import { Component, NgZone, OnInit, Renderer2, AfterViewInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Content, GanttEntry, Item, data } from './data';
 
 import { HttpClient } from '@angular/common/http';
 import { Subscription, fromEvent, take, tap } from 'rxjs';
 import { fields } from './filesystem';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
+import { TreeListComponent } from '@progress/kendo-angular-treelist';
 
 const tableRow = (node) => node.tagName.toLowerCase() === 'tr';
 
@@ -24,7 +25,7 @@ const closest = (node, predicate) => {
       #treeList
       kendoTreeListExpandable
       [kendoTreeListHierarchyBinding]="gridData.data"
-      childrenField="contents"
+      childrenField="Contents"
       [expandBy]="'id'"
       [expandedKeys]="expandedKeys"
       (expandedKeysChange)="onKeysChanged($event)"
@@ -33,12 +34,13 @@ const closest = (node, predicate) => {
       [pageSize]="state.take"
       [height]="900"
       (dataStateChange)="dataStateChange($event)"
+      (pageChange)="dataStateChange($event)"
       [rowClass]="rowCallback"
     >
       <kendo-treelist-column [expandable]="true" field="name" title="Name" [width]="150">
         <ng-template class="temp" kendoTreeListCellTemplate let-dataItem>
           <span class="k-icon k-i-{{ dataItem.level !== 2 ? 'tell-a-friend' : 'user' }}"></span>
-          {{ dataItem.cel0 }}
+          {{ dataItem.cel0.name }}
         </ng-template>
       </kendo-treelist-column>
       <kendo-treelist-column *ngFor="let col of columns" [field]="col.field" [title]="col.title" [width]="width">
@@ -87,13 +89,15 @@ const closest = (node, predicate) => {
   ],
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('treeList', { static: true }) treeList: TreeListComponent;
   public state: State = {
     skip: 0,
-    take: 10,
+    take: 20,
   };
-  public gridData: any = process(data, this.state);
   public data: Item[] = data;
   newData: GanttEntry = null;
+  public gridData: any = process<Content>(this.newData?.Contents || [], this.state);
+
   width = 120;
   fields = fields;
   columns = [];
@@ -118,10 +122,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public dataStateChange(state: State): void {
+    console.log('state##################################', state);
     this.state = state;
-    this.gridData = process(data, this.state);
+    this.gridData = process(this.newData?.Contents || [], this.state);
     this.currentSubscription.unsubscribe();
-    this.zone.onStable.pipe(take(2)).subscribe(() => (this.currentSubscription = this.handleDragAndDrop()));
+    this.zone.onStable.pipe(take(1)).subscribe(() => (this.currentSubscription = this.handleDragAndDrop()));
   }
 
   ngOnInit() {
@@ -131,24 +136,28 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         BeginDate: '2023-05-07',
         EndDate: '2023-05-14',
       })
-      .subscribe((res) => {
+      .subscribe((res: GanttEntry) => {
+        this.gridData = process<Content>(res?.Contents || [], this.state);
         // this.newData = res as GanttEntry;
-        // for (let i = 0; i < 7; i++) {
-        //   if (this.newData[`datename${i + 1}`]) {
-        //     this.columns.push({ field: `x${i + 1}`, title: this.newData[`datename${i + 1}`] });
-        //   }
-        //   this.fields.push(`x${i + 1}`);
-        // }
-        // this.getAllParentTextProperties(this.newData.Contents);
-        // console.log('columns', this.columns);
-        // console.log('fields', this.fields);
+        for (let i = 0; i < 7; i++) {
+          if (res[`datename${i + 1}`]) {
+            this.columns.push({ field: `x${i + 1}`, title: res[`datename${i + 1}`] });
+          }
+          this.fields.push(`x${i + 1}`);
+        }
+        this.getAllParentTextProperties(this.gridData.data);
+        console.log('columns', this.columns);
+        console.log('fields', this.fields);
+        this.currentSubscription.unsubscribe();
+        this.zone.onStable.pipe(take(1)).subscribe(() => (this.currentSubscription = this.handleDragAndDrop()));
+
       });
 
-    for (let i = 0; i < 7; i++) {
-      this.columns.push({ field: `x${i + 1}.name`, title: `x${i + 1}` });
-      this.fields.push(`x${i + 1}`);
-    }
-    this.getAllParentTextProperties(this.gridData.data);
+    // for (let i = 0; i < 7; i++) {
+    //   this.columns.push({ field: `x${i + 1}.name`, title: `x${i + 1}` });
+    //   this.fields.push(`x${i + 1}`);
+    // }
+    // this.getAllParentTextProperties(this.gridData.data);
   }
 
   public expandNodes() {
@@ -161,11 +170,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.expandedKeys = [];
   }
 
-  public getAllParentTextProperties(items: Array<any>) {
-    items.forEach((i) => {
-      if (i.contents) {
+  public getAllParentTextProperties(items: Array<Content>) {
+    items?.forEach((i) => {
+      if (i.Contents) {
         this.allParentNodes.push(i.id);
-        this.getAllParentTextProperties(i.contents);
+        this.getAllParentTextProperties(i.Contents);
       }
     });
   }
@@ -186,8 +195,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleDragAndDrop(): Subscription {
     const sub = new Subscription(() => {});
     let draggedItemIndex;
+    let draggedRowIndex;
 
-    const tableRows = Array.from(document.querySelectorAll('.k-grid tr'));
+    const tableRows = Array.from(document.querySelectorAll('.k-grid td'));
+    console.log('tableRows', tableRows);
     tableRows.forEach((item) => {
       this.renderer.setAttribute(item, 'draggable', 'true');
       const dragStart = fromEvent<DragEvent>(item, 'dragstart');
@@ -218,9 +229,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             })
           )
           .subscribe(({ target }) => {
-            const row: HTMLTableRowElement = <HTMLTableRowElement>target;
-            draggedItemIndex = row.rowIndex;
-            const dataItem = this.gridData.data[draggedItemIndex];
+            const cell: HTMLTableCellElement = <HTMLTableCellElement>target;
+            const tableRow: HTMLTableRowElement = <HTMLTableRowElement>cell.parentElement;
+            draggedItemIndex = cell.cellIndex;
+            draggedRowIndex = tableRow.rowIndex;
+            const dataItem = this.gridData.data[draggedRowIndex].Contents[draggedItemIndex]
             dataItem.dragging = true;
           })
       );
@@ -242,6 +255,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           e.preventDefault();
           const dataItem = this.gridData.data[draggedItemIndex];
           dataItem.dragging = false;
+          this.treeList.reload(dataItem, true);
         })
       );
     });

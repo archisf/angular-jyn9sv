@@ -678,4 +678,4 @@ const data: Item[] = [
 
 
 
-export { data, Item, GanttEntry };
+export { data, Item, GanttEntry, Content };

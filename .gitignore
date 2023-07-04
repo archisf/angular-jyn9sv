@@ -2,5 +2,11 @@ node_modules/
 
 .angular/
 .idea/
+.vscode/
+*.iml
+*.log
+*.swp   
+*.swo
+.run/
 
 dist/
