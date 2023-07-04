@@ -1,5 +1,14 @@
 import { State, process } from '@progress/kendo-data-query';
-import { Component, NgZone, OnInit, Renderer2, AfterViewInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import {
+  Component,
+  NgZone,
+  OnInit,
+  Renderer2,
+  AfterViewInit,
+  OnDestroy,
+  ViewEncapsulation,
+  ViewChild,
+} from '@angular/core';
 import { Content, GanttEntry, Item, data } from './data';
 
 import { HttpClient } from '@angular/common/http';
@@ -7,8 +16,11 @@ import { Subscription, fromEvent, take, tap } from 'rxjs';
 import { fields } from './filesystem';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { TreeListComponent } from '@progress/kendo-angular-treelist';
+import { state } from '@angular/animations';
 
-const tableRow = (node) => node.tagName.toLowerCase() === 'tr';
+const isTableRow = (node) => node.tagName.toLowerCase() === 'tr';
+
+const tableCell = (node) => node.tagName.toLowerCase() === 'td';
 
 const closest = (node, predicate) => {
   while (node && !predicate(node)) {
@@ -35,6 +47,7 @@ const closest = (node, predicate) => {
       [height]="900"
       (dataStateChange)="dataStateChange($event)"
       (pageChange)="dataStateChange($event)"
+      (expand)="onExpand($event)"
       [rowClass]="rowCallback"
     >
       <kendo-treelist-column [expandable]="true" field="name" title="Name" [width]="150">
@@ -124,7 +137,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   public dataStateChange(state: State): void {
     console.log('state##################################', state);
     this.state = state;
-    this.gridData = process(this.newData?.Contents || [], this.state);
+    this.gridData = process(this.gridData.data, this.state);
     this.currentSubscription.unsubscribe();
     this.zone.onStable.pipe(take(1)).subscribe(() => (this.currentSubscription = this.handleDragAndDrop()));
   }
@@ -133,8 +146,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.http
       .post('http://Opti2012/ESIIAPIGetData/gantt/FillData', {
         DepartmentId: 2,
-        BeginDate: '2023-05-07',
-        EndDate: '2023-05-14',
+        BeginDate: '2023-06-11',
+        EndDate: '2023-06-17',
       })
       .subscribe((res: GanttEntry) => {
         this.gridData = process<Content>(res?.Contents || [], this.state);
@@ -150,7 +163,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('fields', this.fields);
         this.currentSubscription.unsubscribe();
         this.zone.onStable.pipe(take(1)).subscribe(() => (this.currentSubscription = this.handleDragAndDrop()));
-
       });
 
     // for (let i = 0; i < 7; i++) {
@@ -197,7 +209,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     let draggedItemIndex;
     let draggedRowIndex;
 
-    const tableRows = Array.from(document.querySelectorAll('.k-grid td'));
+    const tableRows = Array.from(document.querySelectorAll('.k-grid td.available .level2'));
     console.log('tableRows', tableRows);
     tableRows.forEach((item) => {
       this.renderer.setAttribute(item, 'draggable', 'true');
@@ -229,20 +241,31 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             })
           )
           .subscribe(({ target }) => {
-            const cell: HTMLTableCellElement = <HTMLTableCellElement>target;
-            const tableRow: HTMLTableRowElement = <HTMLTableRowElement>cell.parentElement;
-            draggedItemIndex = cell.cellIndex;
+            const cell = <HTMLTableCellElement>target;
+            const row = <HTMLTableRowElement>cell.parentElement;
+            const cell1 = <HTMLTableCellElement>closest(cell, tableCell);
+            const tableRow: HTMLTableRowElement = <HTMLTableRowElement>closest(cell, isTableRow);
+
+            const level = cell1.dataset['level'];
+
+            console.log('Closest td', closest(cell, tableCell), closest(cell, isTableRow));
+            // const cell: HTMLTableCellElement = <HTMLTableCellElement>target;
+            draggedItemIndex = cell1.cellIndex;
             draggedRowIndex = tableRow.rowIndex;
-            const dataItem = this.gridData.data[draggedRowIndex].Contents[draggedItemIndex]
-            dataItem.dragging = true;
+
+            const dataItem = this.gridData.data[draggedRowIndex]?.Contents[draggedItemIndex];
+            console.log('dataItem', draggedRowIndex, draggedRowIndex, dataItem);
+            if (dataItem) dataItem.dragging = true;
           })
       );
 
       sub.add(
         dragOver.subscribe((e: any) => {
           e.preventDefault();
+          console.log('dragOver', e.target);
+
           const dataItem = this.gridData.data.splice(draggedItemIndex, 1)[0];
-          const dropIndex = closest(e.target, tableRow).rowIndex;
+          const dropIndex = closest(e.target, isTableRow).rowIndex;
           const dropItem = this.gridData.data[dropIndex];
 
           draggedItemIndex = dropIndex;
@@ -253,6 +276,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       sub.add(
         dragEnd.subscribe((e: any) => {
           e.preventDefault();
+          console.log('dragEnd', e.target);
+
           const dataItem = this.gridData.data[draggedItemIndex];
           dataItem.dragging = false;
           this.treeList.reload(dataItem, true);
@@ -261,5 +286,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     return sub;
+  }
+
+  onExpand(e) {
+    console.log('onExpand', e);
+    this.dataStateChange(this.state);
   }
 }
