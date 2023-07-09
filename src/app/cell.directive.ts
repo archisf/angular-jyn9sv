@@ -19,7 +19,6 @@ export class CellDirective implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (+this.columnIndex !== 0) {
-      console.log(this.rowIndex, this.columnIndex, this.level);
       this.renderer.addClass(this.elRef.nativeElement.parentElement, 'available');
       if (this.level === 2) {
         this.renderer.addClass(this.elRef.nativeElement.parentElement, 'level2');
@@ -45,18 +44,16 @@ export class CellDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    if (changes.dataItem) {
-      console.log(changes.dataItem.currentValue);
-    }
     if (+this.columnIndex !== 0) {
-      console.log(this.rowIndex, this.columnIndex, this.level);
-      if (changes.level.currentValue === 0) {
+      if (changes.level?.currentValue === 0) {
         this.elRef.nativeElement.parentElement.setAttribute('data-level', '0');
-      } else if (changes.level.currentValue === 1) {
+      } else if (changes.level?.currentValue === 1) {
         this.elRef.nativeElement.parentElement.setAttribute('data-level', '1');
-      } else if (changes.level.currentValue === 2) {
+      } else if (changes.level?.currentValue === 2) {
         this.elRef.nativeElement.parentElement.setAttribute('data-level', '2');
+        this.elRef.nativeElement.parentElement.setAttribute('data-child', changes.dataItem.currentValue.id);
+        this.elRef.nativeElement.parentElement.setAttribute('data-parent', changes.dataItem.currentValue.parent);
+        this.elRef.nativeElement.parentElement.setAttribute('data-grand', changes.dataItem.currentValue.grandparent);
       }
     }
   }

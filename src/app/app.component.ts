@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('treeList', { static: true }) treeList: TreeListComponent;
   public state: State = {
     skip: 0,
-    take: 20,
+    take: 30,
   };
   public data: Item[] = data;
   newData: GanttEntry = null;
@@ -146,8 +146,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.http
       .post('http://Opti2012/ESIIAPIGetData/gantt/FillData', {
         DepartmentId: 2,
-        BeginDate: '2023-06-11',
-        EndDate: '2023-06-17',
+        BeginDate: '2023-03-04',
+        EndDate: '2023-03-10',
       })
       .subscribe((res: GanttEntry) => {
         this.gridData = process<Content>(res?.Contents || [], this.state);
@@ -207,7 +207,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleDragAndDrop(): Subscription {
     const sub = new Subscription(() => {});
     let draggedItemIndex;
+    let draggedParentIndex;
+    let draggedGrandIndex;
     let draggedRowIndex;
+    let draggedColumnIndex;
+
+    let dropItemIndex;
+    let dropParentIndex;
+    let dropGrandIndex;
+    let dropRowIndex;
+    let dropColumnIndex;
+
+    let draggedItem;
+    let droppedItem;
 
     const tableRows = Array.from(document.querySelectorAll('.k-grid td.available .level2'));
     console.log('tableRows', tableRows);
@@ -246,30 +258,68 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const cell1 = <HTMLTableCellElement>closest(cell, tableCell);
             const tableRow: HTMLTableRowElement = <HTMLTableRowElement>closest(cell, isTableRow);
 
-            const level = cell1.dataset['level'];
+            const level = cell1.getAttribute('data-level');
+            const id = cell1.getAttribute('data-child');
+            const parentId = cell1.getAttribute('data-parent');
+            const grandParentId = cell1.getAttribute('data-grand');
 
-            console.log('Closest td', closest(cell, tableCell), closest(cell, isTableRow));
+            console.log('dragStart', cell1, cell1.cellIndex);
             // const cell: HTMLTableCellElement = <HTMLTableCellElement>target;
-            draggedItemIndex = cell1.cellIndex;
-            draggedRowIndex = tableRow.rowIndex;
+            // draggedItemIndex = cell1.cellIndex;
+            // draggedRowIndex = tableRow.rowIndex;
 
-            const dataItem = this.gridData.data[draggedRowIndex]?.Contents[draggedItemIndex];
-            console.log('dataItem', draggedRowIndex, draggedRowIndex, dataItem);
-            if (dataItem) dataItem.dragging = true;
+            draggedGrandIndex = this.gridData.data.findIndex((i) => i.id === +grandParentId);
+            draggedParentIndex = this.gridData.data[draggedGrandIndex].Contents.findIndex((i) => i.id === +parentId);
+            draggedItemIndex = this.gridData.data[draggedGrandIndex].Contents[draggedParentIndex].Contents.findIndex(
+              (i) => i.id === +id
+            );
+            draggedRowIndex = tableRow.rowIndex;
+            draggedColumnIndex = cell1.cellIndex;
+
+            console.log('draggedItemIndex', draggedItemIndex);
+            console.log('draggedParentIndex', draggedParentIndex);
+            console.log('draggedGrandIndex', draggedGrandIndex);
+
+            draggedItem = this.gridData.data[draggedGrandIndex].Contents[draggedParentIndex].Contents[draggedItemIndex];
+            draggedItem.dragging = true;
+
+            // const dataItem = this.gridData.data[draggedRowIndex]?.Contents[draggedItemIndex];
+            // console.log('dataItem', draggedRowIndex, draggedRowIndex, dataItem);
+            // if (dataItem) dataItem.dragging = true;
+            console.log('draggedItem', draggedItem, draggedRowIndex, draggedColumnIndex);
           })
       );
 
       sub.add(
         dragOver.subscribe((e: any) => {
           e.preventDefault();
-          console.log('dragOver', e.target);
+          const point2 = <HTMLTableCellElement>e.target;
+          const cell2 = <HTMLTableCellElement>closest(point2, tableCell);
+          const tableRow2: HTMLTableRowElement = <HTMLTableRowElement>closest(point2, isTableRow);
 
-          const dataItem = this.gridData.data.splice(draggedItemIndex, 1)[0];
-          const dropIndex = closest(e.target, isTableRow).rowIndex;
-          const dropItem = this.gridData.data[dropIndex];
+          const id = cell2.getAttribute('data-child');
+          const parentId = cell2.getAttribute('data-parent');
+          const grandParentId = cell2.getAttribute('data-grand');
+          dropRowIndex = tableRow2.rowIndex;
+          dropColumnIndex = cell2.cellIndex;
+          console.log('dragOver', cell2, tableRow2, id, parentId, grandParentId);
 
-          draggedItemIndex = dropIndex;
-          this.zone.run(() => this.gridData.data.splice(dropIndex, 0, dataItem));
+          dropGrandIndex = this.gridData.data.findIndex((i) => i.id === +grandParentId);
+          dropParentIndex = this.gridData.data[dropGrandIndex].Contents.findIndex((i) => i.id === +parentId);
+          dropItemIndex = this.gridData.data[dropGrandIndex].Contents[dropParentIndex].Contents.findIndex(
+            (i) => i.id === +id
+          );
+          console.log('dropItemIndex', dropItemIndex);
+          console.log('dropParentIndex', dropParentIndex);
+          console.log('dropGrandIndex', dropGrandIndex);
+
+          droppedItem = this.gridData.data[dropGrandIndex].Contents[dropParentIndex].Contents[dropItemIndex];
+          // const dataItem = this.gridData.data.splice(draggedItemIndex, 1)[0];
+          // const dropIndex = closest(e.target, isTableRow).rowIndex;
+          // const dropItem = this.gridData.data[dropIndex];
+
+          // draggedItemIndex = dropIndex;
+          // this.zone.run(() => this.gridData.data.splice(dropIndex, 0, dataItem));
         })
       );
 
@@ -277,10 +327,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         dragEnd.subscribe((e: any) => {
           e.preventDefault();
           console.log('dragEnd', e.target);
+          console.log('draggedItem', draggedItem, draggedRowIndex, draggedColumnIndex);
+          console.log('droppedItem', droppedItem, dropRowIndex, dropColumnIndex);
 
-          const dataItem = this.gridData.data[draggedItemIndex];
-          dataItem.dragging = false;
-          this.treeList.reload(dataItem, true);
+          // this.zone.run(() => this.gridData.data.splice(dropIndex, 0, dataItem));
+          this.zone.run(() => {
+            const one = draggedItem[`x${draggedColumnIndex}`];
+            const two = droppedItem[`x${dropColumnIndex}`];
+            draggedItem[`x${draggedColumnIndex}`] = two;
+            droppedItem[`x${dropColumnIndex}`] = one;
+            draggedItem.dragging = false;
+          });
+
+          // const dataItem = this.gridData.data[draggedItemIndex];
+          // dataItem.dragging = false;
+          // this.treeList.reload(dataItem, true);
         })
       );
     });
