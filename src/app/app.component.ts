@@ -26,7 +26,6 @@ const closest = (node, predicate) => {
   while (node && !predicate(node)) {
     node = node.parentNode;
   }
-
   return node;
 };
 
@@ -221,8 +220,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     let draggedItem;
     let droppedItem;
 
+    const setNull = () => {
+      draggedItemIndex = null;
+      draggedParentIndex = null;
+      draggedGrandIndex = null;
+      draggedRowIndex = null;
+      draggedColumnIndex = null;
+
+      dropItemIndex = null;
+      dropParentIndex = null;
+      dropGrandIndex = null;
+      dropRowIndex = null;
+      dropColumnIndex = null;
+
+      draggedItem = null;
+      droppedItem = null;
+    };
+
     const tableRows = Array.from(document.querySelectorAll('.k-grid td.available .level2'));
-    console.log('tableRows', tableRows);
     tableRows.forEach((item) => {
       this.renderer.setAttribute(item, 'draggable', 'true');
       const dragStart = fromEvent<DragEvent>(item, 'dragstart');
@@ -256,6 +271,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const cell = <HTMLTableCellElement>target;
             const row = <HTMLTableRowElement>cell.parentElement;
             const cell1 = <HTMLTableCellElement>closest(cell, tableCell);
+            console.log('dragStart!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', cell1);
+            // if (!cell1.hasAttribute('data-worker')) {
+            //   return;
+            // }
             const tableRow: HTMLTableRowElement = <HTMLTableRowElement>closest(cell, isTableRow);
 
             const level = cell1.getAttribute('data-level');
@@ -263,7 +282,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             const parentId = cell1.getAttribute('data-parent');
             const grandParentId = cell1.getAttribute('data-grand');
 
-            console.log('dragStart', cell1, cell1.cellIndex);
             // const cell: HTMLTableCellElement = <HTMLTableCellElement>target;
             // draggedItemIndex = cell1.cellIndex;
             // draggedRowIndex = tableRow.rowIndex;
@@ -286,7 +304,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             // const dataItem = this.gridData.data[draggedRowIndex]?.Contents[draggedItemIndex];
             // console.log('dataItem', draggedRowIndex, draggedRowIndex, dataItem);
             // if (dataItem) dataItem.dragging = true;
-            console.log('draggedItem', draggedItem, draggedRowIndex, draggedColumnIndex);
           })
       );
 
@@ -302,16 +319,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           const grandParentId = cell2.getAttribute('data-grand');
           dropRowIndex = tableRow2.rowIndex;
           dropColumnIndex = cell2.cellIndex;
-          console.log('dragOver', cell2, tableRow2, id, parentId, grandParentId);
 
           dropGrandIndex = this.gridData.data.findIndex((i) => i.id === +grandParentId);
           dropParentIndex = this.gridData.data[dropGrandIndex].Contents.findIndex((i) => i.id === +parentId);
           dropItemIndex = this.gridData.data[dropGrandIndex].Contents[dropParentIndex].Contents.findIndex(
             (i) => i.id === +id
           );
-          console.log('dropItemIndex', dropItemIndex);
-          console.log('dropParentIndex', dropParentIndex);
-          console.log('dropGrandIndex', dropGrandIndex);
 
           droppedItem = this.gridData.data[dropGrandIndex].Contents[dropParentIndex].Contents[dropItemIndex];
           // const dataItem = this.gridData.data.splice(draggedItemIndex, 1)[0];
@@ -326,22 +339,31 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       sub.add(
         dragEnd.subscribe((e: any) => {
           e.preventDefault();
-          console.log('dragEnd', e.target);
-          console.log('draggedItem', draggedItem, draggedRowIndex, draggedColumnIndex);
-          console.log('droppedItem', droppedItem, dropRowIndex, dropColumnIndex);
 
           // this.zone.run(() => this.gridData.data.splice(dropIndex, 0, dataItem));
           this.zone.run(() => {
+            // if (!draggedColumnIndex) {
+            //   setNull();
+            //   return;
+            // }
+
             const one = draggedItem[`x${draggedColumnIndex}`];
             const two = droppedItem[`x${dropColumnIndex}`];
-            draggedItem[`x${draggedColumnIndex}`] = two;
-            droppedItem[`x${dropColumnIndex}`] = one;
+
+            if (one.data.WorkerID) {
+              draggedItem[`x${draggedColumnIndex}`] = two;
+              droppedItem[`x${dropColumnIndex}`] = one;
+              }
             draggedItem.dragging = false;
+            setNull();
           });
 
           // const dataItem = this.gridData.data[draggedItemIndex];
           // dataItem.dragging = false;
           // this.treeList.reload(dataItem, true);
+          
+
+
         })
       );
     });

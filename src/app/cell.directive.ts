@@ -25,8 +25,8 @@ export class CellDirective implements OnInit, OnChanges {
       }
     }
 
-    if (+this.columnIndex !== 0 && this.dataItem[fields[this.columnIndex]]?.name) {
-      // console.log(this.dataItem, this.columnIndex, this.column, this.rowIndex, this.level);
+    if (+this.columnIndex !== 0 && this.dataItem[fields[this.columnIndex]]?.data) {
+      console.log(this.dataItem[fields[this.columnIndex]]?.data.WorkerID);
       // if (this.level === 1) {
       //   console.log('back');
       //   this.renderer.setStyle(
@@ -50,10 +50,14 @@ export class CellDirective implements OnInit, OnChanges {
       } else if (changes.level?.currentValue === 1) {
         this.elRef.nativeElement.parentElement.setAttribute('data-level', '1');
       } else if (changes.level?.currentValue === 2) {
+        console.log('current value', changes.dataItem.currentValue[fields[this.columnIndex]]?.data.WorkerID);
         this.elRef.nativeElement.parentElement.setAttribute('data-level', '2');
         this.elRef.nativeElement.parentElement.setAttribute('data-child', changes.dataItem.currentValue.id);
         this.elRef.nativeElement.parentElement.setAttribute('data-parent', changes.dataItem.currentValue.parent);
         this.elRef.nativeElement.parentElement.setAttribute('data-grand', changes.dataItem.currentValue.grandparent);
+        // if (changes.dataItem.currentValue[fields[this.columnIndex]]?.data.WorkerID) {
+        //   this.elRef.nativeElement.parentElement.setAttribute('data-worker', changes.dataItem.currentValue[fields[this.columnIndex]]?.data.WorkerID);
+        // }
       }
     }
   }
